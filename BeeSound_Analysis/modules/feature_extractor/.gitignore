@@ -1,0 +1,5 @@
+*.Rhistory
+.Rproj.user/*
+windows/*
+.Rproj.user
+autom4te.cache/*

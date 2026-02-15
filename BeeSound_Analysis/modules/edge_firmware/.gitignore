@@ -1,0 +1,10 @@
+Debug/
+.metadata/
+.settings/
+bin/
+.cproject
+.project
+.DS_Store
+peter/
+wav/
+energy_bands.dat

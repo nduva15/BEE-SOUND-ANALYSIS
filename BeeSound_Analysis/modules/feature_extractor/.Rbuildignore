@@ -1,0 +1,10 @@
+^CRAN-RELEASE$
+^.*\.Rproj$
+^\.Rproj\.user$
+^windows
+^config.log
+^cran-comments\.md$
+^\.travis\.yml$
+^revdep$
+^\.github$
+^CRAN-SUBMISSION$
