@@ -81,6 +81,29 @@ for f in files:
     !python tools/run_kaggle.py --input "{f}" --limit 5
 ```
 
+## 4. Dataset Locations (The "Big 4")
+The 28GB dataset is located at these exact paths on Kaggle:
+- **NUHIVE**: `/kaggle/input/datasets/augustin23/beetogether/NUHIVE/NUHIVE`
+- **BAD**: `/kaggle/input/datasets/augustin23/beetogether/BAD/BAD`
+- **SBCM**: `/kaggle/input/datasets/augustin23/beetogether/SBCM/SBCM`
+- **TBON**: `/kaggle/input/datasets/augustin23/beetogether/TBON/TBON`
+
+## 5. Master Indexer (Before Training)
+Run this in Kaggle to create a manifest of all 28GB of audio:
+
+```python
+import os
+import pandas as pd
+data_dirs = ["/kaggle/input/datasets/augustin23/beetogether/NUHIVE/NUHIVE", "/kaggle/input/datasets/augustin23/beetogether/BAD/BAD", "/kaggle/input/datasets/augustin23/beetogether/SBCM/SBCM", "/kaggle/input/datasets/augustin23/beetogether/TBON/TBON"]
+manifest = []
+for d in data_dirs:
+    for root, _, files in os.walk(d):
+        for f in files:
+            if f.endswith(('.wav', '.ogg', '.mp3')):
+                manifest.append({'path': os.path.join(root, f)})
+pd.DataFrame(manifest).to_csv('bee_training_master.csv', index=False)
+```
+
 ---
 
-**Happy Cloud Computing!** 🐝
+**Happy Cloud Training!** 🐝
