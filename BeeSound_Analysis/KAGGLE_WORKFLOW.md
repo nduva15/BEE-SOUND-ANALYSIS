@@ -82,7 +82,15 @@ for f in files:
 ```
 
 ## 4. Dataset Locations (The "Big 4")
-The 28GB dataset is located at these exact paths on Kaggle:
+The 28GB dataset is organized into Master HDF5 indices and Raw Audio folders:
+
+### 📄 Metadata Indices (.h5)
+- **NUHIVE**: `/kaggle/input/datasets/augustin23/beetogether/NUHIVE.h5`
+- **TBON**: `/kaggle/input/datasets/augustin23/beetogether/TBON.h5`
+- **SBCM**: `/kaggle/input/datasets/augustin23/beetogether/SBCM.h5`
+- **BAD**: `/kaggle/input/datasets/augustin23/beetogether/BAD.h5`
+
+### 🔊 Raw Audio Folders
 - **NUHIVE**: `/kaggle/input/datasets/augustin23/beetogether/NUHIVE/NUHIVE`
 - **BAD**: `/kaggle/input/datasets/augustin23/beetogether/BAD/BAD`
 - **SBCM**: `/kaggle/input/datasets/augustin23/beetogether/SBCM/SBCM`
