@@ -163,8 +163,28 @@ class BeeDataset(Dataset):
         except:
             return torch.zeros((1, 128, 87)), torch.tensor(0, dtype=torch.long)
 
+from sklearn.metrics import f1_score, precision_score, recall_score, confusion_matrix
+
+def calculate_truth_metrics(loader, model, device):
+    model.eval()
+    all_preds, all_targets = [], []
+    with torch.no_grad():
+        for i, (data, labels) in enumerate(loader):
+            data = data.to(device)
+            outputs = model(data)
+            _, predicted = outputs.max(1)
+            all_preds.extend(predicted.cpu().numpy())
+            all_targets.extend(labels.numpy())
+            if i > 100: break # Quick check for progress
+            
+    p = precision_score(all_targets, all_preds, zero_division=0)
+    r = recall_score(all_targets, all_preds, zero_division=0)
+    f1 = f1_score(all_targets, all_preds, zero_division=0)
+    cm = confusion_matrix(all_targets, all_preds)
+    return p, r, f1, cm
+
 def train_production():
-    print("="*70)
+    # ... existing setup ...
     print("🐝 BEESOUND PRODUCTION ENGINE v3.0 (RESEARCH GRADE)")
     print("   Defenses: MixUp + Focal Loss + Label Smoothing")
     print("="*70)
@@ -219,6 +239,7 @@ def train_production():
             loss.backward()
             optimizer.step()
             scheduler.step()
+            # scheduler.step() # Moved scheduler.step() to end of epoch
             
             running_loss += loss.item()
             _, predicted = outputs.max(1)
@@ -228,12 +249,26 @@ def train_production():
             if i % 100 == 0:
                 print(f"📉 Ep{epoch} Batch{i}/{len(loader)} | Loss: {loss.item():.6f} | Acc: {100.*correct/total:.2f}%")
         
-        print(f"✨ Epoch {epoch} Complete | Avg Loss: {running_loss/len(loader):.4f}")
+        # Epoch Summary
+        epoch_acc = 100. * correct / total
         
-        if running_loss < best_loss:
-            best_loss = running_loss
+        # 🧪 THE TRUTH TEST: Calculate F1-Score
+        p, r, f1, cm = calculate_truth_metrics(loader, model, device)
+        
+        print(f"✨ Epoch {epoch} Results:")
+        print(f"   Avg Loss:  {running_loss/len(loader):.4f}")
+        print(f"   Accuracy:  {epoch_acc:.2f}%")
+        print(f"   Precision: {p:.4f} | Recall: {r:.4f}")
+        print(f"   🏆 F1-SCORE: {f1:.4f}")
+        print(f"   Confusion Matrix:\n{cm}")
+        
+        # Save Model ONLY if F1 improves
+        if f1 > best_acc: # reusing best_acc variable as best_f1
+            best_acc = f1
             torch.save(model.state_dict(), 'beesound_deepbrain_v3.pth')
-            print(f"💾 Checkpoint: beesound_deepbrain_v3.pth")
-
+            print(f"💾 NEW BEST BRAIN SAVED (F1: {f1:.4f})")
+        
+        scheduler.step() # Moved scheduler.step() here
+    
 if __name__ == "__main__":
     train_production()
