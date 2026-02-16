@@ -24,7 +24,7 @@ class AudioSegmenter:
         self.overlap = overlap
         self.sample_rate = sample_rate
         
-    def segment_audio(self, file_path):
+    def segment_audio(self, file_path=None, audio_data=None, sr=None):
         """
         Slice long audio into 2-second overlapping windows.
         
@@ -32,14 +32,27 @@ class AudioSegmenter:
         - 1 minute of audio → ~120 analyzable samples
         - Overlap ensures we don't miss events at boundaries
         
-        Returns:
-            List of audio segments (numpy arrays)
-        """
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"Audio file not found: {file_path}")
+        Args:
+            file_path: Path to audio file (optional)
+            audio_data: Numpy array of audio samples (optional)
+            sr: Sample rate (required if audio_data is used)
         
-        # Load audio
-        y, sr = librosa.load(file_path, sr=self.sample_rate)
+        Returns:
+            List of audio segments (numpy arrays), List of timestamps
+        """
+        y = None
+        
+        # Determine source
+        if audio_data is not None:
+             y = audio_data
+             if sr is None:
+                 sr = self.sample_rate # Assume default if not provided
+        elif file_path:
+             if not os.path.exists(file_path):
+                 raise FileNotFoundError(f"Audio file not found: {file_path}")
+             y, sr = librosa.load(file_path, sr=self.sample_rate)
+        else:
+             raise ValueError("Must provide either file_path or audio_data")
         
         # Calculate window parameters
         window_samples = int(self.window_size * self.sample_rate)
@@ -48,6 +61,10 @@ class AudioSegmenter:
         segments = []
         timestamps = []
         
+        # Safety check for short audio
+        if len(y) < window_samples:
+             return segments, timestamps
+
         # Create overlapping segments
         for start in range(0, len(y) - window_samples + 1, hop_samples):
             segment = y[start : start + window_samples]
@@ -59,21 +76,10 @@ class AudioSegmenter:
     def get_segment_count(self, duration_seconds):
         """
         Calculate how many segments will be generated from a given duration.
-        
-        Args:
-            duration_seconds: Total audio duration in seconds
-            
-        Returns:
-            Number of segments
         """
         hop_duration = self.window_size - self.overlap
         return int((duration_seconds - self.window_size) / hop_duration) + 1
 
 if __name__ == "__main__":
-    # Test the segmenter
     segmenter = AudioSegmenter()
-    
-    # Example: 60 seconds of audio
-    expected_segments = segmenter.get_segment_count(60)
-    print(f"📊 60 seconds of audio → {expected_segments} segments")
-    print(f"   Window: {segmenter.window_size}s, Overlap: {segmenter.overlap}s")
+    print(f"✅ Segmenter loaded. Window: {segmenter.window_size}s")
