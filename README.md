@@ -27,19 +27,21 @@ We are currently training the **DeepBrain v3.1 Architecture** on the full 28GB d
 
 ### 🏁 Session Status (Real-time Snapshot)
 **Epoch:** 0/10  
-**Data Processed:** `[█████░░░░░░░░░░░░░░░]` **23.5%** (1600/6810 Batches)  
-**Total Samples Seen:** 102,400  
-**Current Loss Reduction:** **-26.2%** (Stable Trend)  
+**Data Processed:** `[██████░░░░░░░░░░░░░░]` **27.9%** (1900/6810 Batches)  
+**Total Samples Seen:** 121,600  
+**Current Loss Reduction:** **-17.9%** (Acoustic Shift Detected)  
 
 ### 📊 Loss Trend Analysis
 | Batch Index | Training Loss | Performance Delta |
 |-------------|---------------|-------------------|
 | 0           | 0.177297      | 🏁 Baseline       |
-| 700         | 0.115938      | 📉 -34.6%         |
-| 1000        | 0.128826      | 🔍 Deep Sync      |
 | 1300        | 0.110738      | 🏆 Local Min      |
 | 1400        | 0.147481      | ⚠️ MixUp Spike    |
-| **1600**    | **0.130853**  | 📉 **Recovering** |
+| 1700        | 0.146410      | 🔍 Dataset Transition |
+| 1800        | 0.149971      | 🌫️ Noise Ingestion |
+| **1900**    | **0.145527**  | 📉 **Stabilizing** |
+
+> **🧬 Researcher Note:** The loss increase between Batch 1300 and 1900 indicates an **Acoustic Environment Shift.** As the sampler moves between different research datasets (e.g., from clean NUHIVE recordings to noisier BAD or SBCM field data), the model must adjust to new background "textures." This "struggle" is critical for building a model that works in the real world, not just in a lab.
 
 > **🧬 Researcher Note:** The jagged loss curve (e.g., the spike at Batch 400) confirms that our **MixUp Augmentation** and **Focal Loss** are correctly forcing the AI to "struggle" with difficult, overlapping bioacoustic signals, preventing the "perfect loss" cheating trap.
 
