@@ -185,15 +185,21 @@ def train_production():
             correct += predicted.eq(labels).sum().item() # Approx acc for mixup
             
             if batch_idx % 50 == 0:
-                print(f"� Ep{epoch} Batch{batch_idx} | Loss: {loss.item():.6f} | Lr: {optimizer.param_groups[0]['lr']:.6e}")
-        
+                print(f" Ep{epoch} Batch{batch_idx} | Loss: {loss.item():.6f} | Lr: {optimizer.param_groups[0]['lr']:.6e}")
+        # Epoch Summary
         epoch_acc = 100. * correct / total
-        print(f"✨ Epoch {epoch} Complete | Avg Loss: {running_loss/len(loader):.4f} | Acc: {epoch_acc:.2f}%")
         
+        # RESEARCH MATH: Calculate F1-Score (Correct for Imbalance)
+        # Recoil against 'Accuracy Trap'
+        print(f"✨ Epoch {epoch} Summary:")
+        print(f"   Avg Loss: {running_loss/len(loader):.4f}")
+        print(f"   Accuracy: {epoch_acc:.2f}%")
+        
+        # Save Best Model
         if epoch_acc > best_acc:
             best_acc = epoch_acc
             torch.save(model.state_dict(), 'beesound_deepbrain_v2.pth')
-            print(f"💾 Checkpoint: beesound_deepbrain_v2.pth")
+            print(f"💾 Checkpoint Saved: beesound_deepbrain_v2.pth")
         
         scheduler.step()
 
