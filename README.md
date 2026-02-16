@@ -28,17 +28,17 @@ We are currently training the **DeepBrain v3.1 Architecture** on the full 28GB d
 ### 🏁 Session Status (Real-time Snapshot)
 **Epoch:** 0/10  
 **Data Processed:** `[████████████░░░░░░░░]` **58.7%** (4000/6810 Batches)  
-**Total Samples Seen:** 256,000  
-**Runtime:** ~3h 40m
+**Total Samples Seen:** 256,000+  
+**Runtime:** 2h 50m (Stable Production Run)
 
 ### 🖥️ Infrastructure Benchmarks (Kaggle T4 x2)
 | Component | Utilization | Status |
 |-----------|-------------|--------|
-| **CPU (4-Core)** | 382.00% | 🔥 Near Max Parallelism |
-| **System RAM** | 7.4GiB / 30GiB | ✅ Stable Streaming |
-| **GPU 1 (NVIDIA T4)** | 94.00% | 🚀 Heavy Feature Mapping |
+| **CPU (4-Core)** | 400.00% | ⚡ **Absolute Max Parallelism** |
+| **System RAM** | 8.6GiB / 30GiB | ✅ High-Throughput Streaming |
+| **GPU 1 (NVIDIA T4)** | 94.00% (Avg) | 🚀 Bio-Neural Mapping |
 | **GPU 2 (NVIDIA T4)** | 0.00% | 💤 Reserved for Validation |
-| **Disk Space** | 371.5MiB | 📦 Persistent Checkpoints |
+| **Disk Space** | 372.4MiB | 📦 Persistent Checkpoints |
 
 > **📊 Performance Note:** We have breached the **Quarter-Million Sample** barrier. The model has officially processed 256,000 recordings with consistent downward loss pressure.
 
