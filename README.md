@@ -27,19 +27,19 @@ We are currently training the **DeepBrain v3.1 Architecture** on the full 28GB d
 
 ### 🏁 Session Status (Real-time Snapshot)
 **Epoch:** 0/10  
-**Data Processed:** `[████░░░░░░░░░░░░░░░░]` **19%** (1300/6810 Batches)  
-**Total Samples Seen:** 83,200  
-**Current Loss Reduction:** **-37.5%** since Batch 0  
+**Data Processed:** `[█████░░░░░░░░░░░░░░░]` **23.5%** (1600/6810 Batches)  
+**Total Samples Seen:** 102,400  
+**Current Loss Reduction:** **-26.2%** (Stable Trend)  
 
 ### 📊 Loss Trend Analysis
 | Batch Index | Training Loss | Performance Delta |
 |-------------|---------------|-------------------|
 | 0           | 0.177297      | 🏁 Baseline       |
-| 300         | 0.138565      | 📉 -21.8%         |
-| 400         | 0.173715      | ⚠️ MixUp Spike    |
 | 700         | 0.115938      | 📉 -34.6%         |
 | 1000        | 0.128826      | 🔍 Deep Sync      |
-| **1300**    | **0.110738**  | 🏆 **New Record** |
+| 1300        | 0.110738      | 🏆 Local Min      |
+| 1400        | 0.147481      | ⚠️ MixUp Spike    |
+| **1600**    | **0.130853**  | 📉 **Recovering** |
 
 > **🧬 Researcher Note:** The jagged loss curve (e.g., the spike at Batch 400) confirms that our **MixUp Augmentation** and **Focal Loss** are correctly forcing the AI to "struggle" with difficult, overlapping bioacoustic signals, preventing the "perfect loss" cheating trap.
 
