@@ -27,9 +27,20 @@ We are currently training the **DeepBrain v3.1 Architecture** on the full 28GB d
 
 ### 🏁 Session Status (Real-time Snapshot)
 **Epoch:** 0/10  
-**Data Processed:** `[█████████░░░░░░░░░░░]` **44.0%** (3000/6810 Batches)  
-**Total Samples Seen:** 192,000  
-**Current Loss Reduction:** **-41.5%** (New Record Low @ Batch 2600)  
+**Data Processed:** `[██████████░░░░░░░░░░]` **48%** (~3300/6810 Batches)  
+**Total Samples Seen:** 211,200  
+**Runtime:** 2h 29m (approx 150 min)
+
+### 🖥️ Infrastructure Benchmarks (Kaggle T4 x2)
+| Component | Utilization | Status |
+|-----------|-------------|--------|
+| **CPU (4-Core)** | 382.00% | 🔥 Near Max Parallelism |
+| **System RAM** | 7.4GiB / 30GiB | ✅ Stable Streaming |
+| **GPU 1 (NVIDIA T4)** | 94.00% | 🚀 Heavy Feature Mapping |
+| **GPU 2 (NVIDIA T4)** | 0.00% | 💤 Reserved for Validation |
+| **Disk Space** | 371.5MiB | 📦 Persistent Checkpoints |
+
+> **📊 Performance Note:** Achieving 382% CPU utilization confirms that the **4-worker parallel DataLoader** is effectively saturating the compute pipeline. The GPU 1 utilization at 94% indicates that the **Bio-Neural ResNet** is processing the acoustic mel-spectrograms at peak efficiency without bottlenecking.
 
 ### 📊 Loss Trend Analysis
 | Batch Index | Training Loss | Performance Delta |
