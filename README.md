@@ -29,16 +29,16 @@ We are currently training the **DeepBrain v3.1 Architecture** on the full 28GB d
 **Epoch:** 0/10  
 **Data Processed:** `[████████████████░░░░]` **79.3%** (5400/6810 Batches)  
 **Total Samples Seen:** 345,600  
-**Runtime:** ~3h 35m (Performance Locked)
+**Runtime:** 3h 23m (Production Resilience Milestone)
 
 ### 🖥️ Infrastructure Benchmarks (Kaggle T4 x2)
 | Component | Utilization | Status |
 |-----------|-------------|--------|
-| **CPU (4-Core)** | 398.00% | ⚡ **High-Throughput Parallelism** |
-| **System RAM** | 9.3GiB / 30GiB | ✅ Stable Streaming |
-| **GPU 1 (NVIDIA T4)** | 80.00% | 🚀 Feature Processing |
+| **CPU (4-Core)** | 396.00% | ⚡ **Consistent Parallelism** |
+| **System RAM** | 10.3GiB / 30GiB | ✅ High-Depth Buffer (Safe) |
+| **GPU 1 (NVIDIA T4)** | 80.00% (Avg) | 🚀 ResNet Mapping |
 | **GPU 2 (NVIDIA T4)** | 0.00% | 💤 Reserved for Validation |
-| **Disk Space** | 372.8MiB | 📦 Persistent Checkpoints |
+| **Disk Space** | 373.3MiB | 📦 Persistent Checkpoints |
 
 > **📊 Performance Note:** We have officially crossed the **345,000 Sample Milestone.** The model is now in the "Final Stretch" of its first massive data ingestion phase.
 
