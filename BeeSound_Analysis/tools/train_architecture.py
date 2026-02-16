@@ -110,7 +110,7 @@ class BeeDeepArchitecture(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(256, 128),
+            nn.Linear(128, 128), # Matches the 128 output channels from layer3
             nn.Dropout(0.5),
             nn.Linear(128, num_classes)
         )
