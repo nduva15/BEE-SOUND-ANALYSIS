@@ -685,11 +685,7 @@ If you use this work in your research, please cite:
 
 ## 📧 Contact & Support
 
-<div align="center">
 
-**Author:** Timothy Nduva  
-**Email:** timothynduva349@gmail.com  
-**GitHub:** [@nduva15](https://github.com/nduva15)
 
 [![GitHub Issues](https://img.shields.io/github/issues/nduva15/BEE-SOUND-ANALYSIS)](https://github.com/nduva15/BEE-SOUND-ANALYSIS/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/nduva15/BEE-SOUND-ANALYSIS)](https://github.com/nduva15/BEE-SOUND-ANALYSIS/stargazers)
