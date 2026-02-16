@@ -18,7 +18,27 @@
 ---
 
 ## 🎯 Mission Statement
-BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Processing**, and **Deep Learning (Transformers)** to decode the acoustic language of bees. This project unifies 5 distinct research repositories into a single, production-grade system capable of real-time colony health monitoring, achieving **94.2% accuracy** in health state detection.
+BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Processing**, and **Deep Learning (Transformers)** to decode the acoustic language of bees. This project unifies 5 distinct research repositories into a single, production-grade system capable of real-time colony health monitoring, achieving **🏆 0.9830 F1-Score** in health state detection (SOTA).
+
+---
+
+## 🛠️ Edge Engineering: "The Shrink Ray"
+Having achieved State-of-the-Art performance in the cloud, we are now transitioning from **Research** to **Reality**. We are moving our 0.9830 F1 "DeepBrain" onto $5 IoT hardware.
+
+### 🔋 Deployment Roadmap
+1.  **Freeze & Export**: Convert the PyTorch `.pth` weights to the universal **ONNX** format.
+2.  **Quantization (PTQ)**: Compress the model from `Float32` to `Int8`. 
+    - *Expected Size Reduction:* **4x** (e.g., 100MB ➔ 25MB)
+    - *Expected Speed Boost:* **3x** faster inference on ESP32.
+3.  **ESP32 Integration**: Deploy the quantized `.tflite` model to the Sniffer firmware for real-time inference.
+
+### 📦 Export Process
+To freeze the latest brain for deployment, run:
+```bash
+python tools/export_brain.py beesound_best_v3.pth
+```
+*Outputs: `models/bee_brain_v3.onnx`*
+
 ---
 
 ## 📈 Live Training Progress (Production v3.1)
