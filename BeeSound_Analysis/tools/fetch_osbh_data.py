@@ -17,13 +17,13 @@ manifest = {
     "test_tone_clean.wav": "https://upload.wikimedia.org/wikipedia/commons/c/c8/A440_tone_5s.wav" # For calibration
 }
 
-print(f"🐝 BEESOUND: Fetching OSBH Reference Data into {TARGET_DIR}...")
+print(f"[BEESOUND]: Fetching OSBH Reference Data into {TARGET_DIR}...")
 
 # Create an unverified SSL context to avoid certificate errors
 ssl._create_default_https_context = ssl._create_unverified_context
 
 for filename, url in manifest.items():
-    print(f"   ⬇️  Downloading {filename}...")
+    print(f"   [DOWNLOADING] {filename}...")
     try:
         output_path = os.path.join(TARGET_DIR, filename)
         # Fake a user-agent because their server blocks python-scripts sometimes
@@ -32,8 +32,8 @@ for filename, url in manifest.items():
         urllib.request.install_opener(opener)
         
         urllib.request.urlretrieve(url, output_path)
-        print(f"       ✅ Saved.")
+        print(f"       [SAVED].")
     except Exception as e:
-        print(f"       ❌ Failed: {e}")
+        print(f"       [FAILED]: {e}")
 
-print("\n🚀 Data Sync Complete. You can now test the C++ engine against these files.")
+print("\n[SUCCESS] Data Sync Complete. You can now test the C++ engine against these files.")
