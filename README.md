@@ -41,12 +41,18 @@ We have successfully mapped and indexed **435,836 labeled recordings** across th
 - **SBCM**: 213,000 samples
 - **TBON**: 13,000 samples
 
-### 🧠 Research-Grade Neural Engine (v3.1)
-Our production training architecture (`tools/train_architecture.py`) has been upgraded with rigorous mathematical defenses to handle extreme class imbalance:
-1.  **Label Smoothing (Szegedy et al.)**: Prevents overconfidence/overfitting.
-2.  **Focal Loss (Lin et al.)**: Forces the model to focus on "Hard Samples" (Alerts) instead of easy "NoBee" noise.
-3.  **MixUp Augmentation (Zhang et al.)**: Blends acoustic signals to prevent memorization and ensure generalization.
-4.  **Deep Residual CNN (ResNet)**: A multi-layer residual architecture for high-fidelity acoustic feature mapping.
+### ⚙️ Training Configuration (v3.1)
+To ensure reproducibility, we use the following academic-standard hyperparameters:
+
+| Hyperparameter | Value | Rationale |
+|----------------|-------|-----------|
+| **Optimizer** | AdamW | Integrated L2 regularization for stability. |
+| **Learning Rate** | 1e-4 | Low LR to prevent gradients from exploding in Big Data. |
+| **Focal Gamma ($\gamma$)** | 2.0 | Focuses on hard detections (Alerts). |
+| **Label Smoothing ($\epsilon$)** | 0.1 | Prevents model overconfidence on noisy samples. |
+| **MixUp Alpha ($\alpha$)** | 0.4 | Blends acoustic signals to force feature extraction. |
+| **Batch Size** | 64 | Optimized for T4/P100 Kaggle GPUs. |
+| **Architecture** | ResNet-Deep | Residual blocks to ensure signal fidelity. |
 
 ### 🧪 The "Truth Test" (Validation)
 We have moved beyond "Accuracy" (which is a lie in imbalanced data) to **F1-Score Metrics**. Our pipeline now reports:
