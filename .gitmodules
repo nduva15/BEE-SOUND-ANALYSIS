@@ -1,0 +1,3 @@
+[submodule "BeeSound_Analysis/external/audiohealth"]
+	path = BeeSound_Analysis/external/audiohealth
+	url = https://github.com/hiveeyes/audiohealth
