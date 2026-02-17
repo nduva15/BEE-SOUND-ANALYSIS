@@ -61,28 +61,29 @@ To prove generalization, we perform a "blind test": Training on the **NU-Hive** 
 
 We are currently training the **DeepBrain v3.1 Architecture** on the full 28GB dataset in the Kaggle Cloud.
 
-### 🏁 Session Status: RECOVERY COMPLETE & CYCLE 2 STARTED 🏆
-**Current Phase:** Post-recovery Optimization (Cycle 2)
-**Epoch:** 1/1 (Extension Phase)  
-**Data Processed:** `[███████░░░░░░░░░░░░░]` **38.2%** (2600/6810 Batches)  
-**Total Samples Seen:** 602,240 (Active Traversal)  
-**Epoch 0 Result:** 🏆 **0.9737 F1** (0.1226 Avg Loss)
+### 🏁 Session Status: CRITICAL SESSION RECOVERY 🔄
+**Current Phase:** Restoring Foundation after Kaggle Reset  
+**Status:** Waiting for Re-Indexing  
+**Manifest:** `train_manifest_labeled.csv` (MISSING - REBUILDING)  
+**Tool:** `tools/fast_indexer.py`
 
-### 🧩 Final Truth Matrix (Epoch 0 Validation)
-| | Predicted: Noise | Predicted: ALERT |
-|---|---|---|
-| **Actual: Noise** | **1,650** | 12 |
-| **Actual: ALERT** | 74 | **1,592** |
+### 📊 Recovery Strategy
+Due to a Kaggle session timeout/wipe, the data pointers (manifest) and weights were lost from `/kaggle/working`. We are implementing a robust **Nitro Indexing v2.0** to re-map the 235k+ recordings and trigger a final 1-Epoch sweep to recapture our **0.9737 F1** "Best Brain."
 
-### 📊 Loss Trend Analysis (Cycle 2)
-| Epoch | Batch Index | Training Loss | Performance Delta |
-|-------|-------------|---------------|-------------------|
-| 0     | 6500        | 0.093518      | 🥇 Ep0 Record     |
-| 1     | 400         | 0.096572      | 🚀 Rapid Converge |
-| **1** | **1900**    | **0.094203**  | 🔥 **New Record Low** |
-| 1     | 2600        | 0.112062      | 📉 Stability Zone |
+### 🛠️ Recovery Commands (Run on Kaggle):
+```bash
+# 1. Update Tools
+!git pull origin main
+%cd /kaggle/working/BEE-SOUND-ANALYSIS/BeeSound_Analysis
 
-> **🧬 Researcher Note:** The model surpassed the previous "Recovery Target" of 0.9830 with a stunning **0.0935** loss at end of Epoch 0, though the F1 (0.9737) was slightly lower due to validation strictness. Now in Epoch 1, we have already hit **0.0942**, confirming that the model is pushing new boundaries of precision. Values sub-0.100 are now becoming the norm.
+# 2. Re-Index 28GB Dataset
+!python tools/fast_indexer.py
+
+# 3. Final Retrain & Freeze
+!python tools/train_architecture.py --epochs 1
+```
+
+> **🧬 Researcher Note:** The previous run proved that the architecture can achieve **0.97+ F1** in exactly one pass. This recovery run is not just a "re-do"—it is the final step to freeze the weights into **ONNX** format for ESP32 deployment.
 
 ### 🛑 SOTA Decision Matrix
 | Condition | Action | Rationale |
