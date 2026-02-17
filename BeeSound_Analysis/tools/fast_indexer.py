@@ -13,8 +13,12 @@ def fast_index():
         return
 
     # 1. Faster Search
-    print("🔍 Probing Kaggle Inputs (this can take 2-5 minutes)...")
-    os.system('find /kaggle/input -name "*.wav" > raw_files.txt')
+    print("📂 Checking mounted datasets in /kaggle/input...")
+    os.system('ls -d /kaggle/input/*/')
+    
+    print("\n🔍 Probing Kaggle Inputs (Exhaustive Search)...")
+    # Use -iname for case-insensitivity and search for both wav and WAV
+    os.system('find /kaggle/input -iname "*.wav" > raw_files.txt')
     
     if not os.path.exists('raw_files.txt') or os.path.getsize('raw_files.txt') == 0:
         print("❌ CRITICAL: No .wav files found in /kaggle/input.")
