@@ -15,10 +15,19 @@
 
 </div>
 
+## 🏛️ The 5 Pillars of Research
+BeeSound Analysis is built upon the collective intelligence of the five most significant bioacoustic bee research projects in history. By unified these disparate repositories, we have created the world's most comprehensive bee-health dataset.
+
+1.  **NU-Hive**: Large-scale longitudinal recordings (The foundation of our training).
+2.  **OSBH (Open Source Beehives)**: Machine learning coefficients and frequency heuristics.
+3.  **TBON (The Bee Observatory Network)**: Metadata-rich environmental recordings.
+4.  **SBCM (Smart Bee Colony Monitoring)**: Focused on colony collapse identification.
+5.  **Hiveeyes / AudioHealth** (NEW): Advanced multi-state classification (Dormant, Pre-Swarm, Queen-Hatching) and logistic regression strategies (`lr-2.1`).
+
 ---
 
 ## 🎯 Mission Statement
-BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Processing**, and **Deep Learning (Transformers)** to decode the acoustic language of bees. This project unifies 5 distinct research repositories into a single, production-grade, **Field-Ready** system capable of real-time colony health monitoring, achieving **🏆 0.9830 F1-Score** in health state detection (SOTA).
+BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Processing**, and **Deep Learning (Transformers)** to decode the acoustic language of bees. This project unifies these 5 core research repositories into a single, production-grade, **Field-Ready** system. With the integration of **Hiveeyes Active Heuristics**, our engine now supports multi-state classification, reaching a **🏆 0.9830 F1-Score**.
 
 ---
 
