@@ -18,7 +18,7 @@
 ---
 
 ## 🎯 Mission Statement
-BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Processing**, and **Deep Learning (Transformers)** to decode the acoustic language of bees. This project unifies 5 distinct research repositories into a single, production-grade system capable of real-time colony health monitoring, achieving **🏆 0.9830 F1-Score** in health state detection (SOTA).
+BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Processing**, and **Deep Learning (Transformers)** to decode the acoustic language of bees. This project unifies 5 distinct research repositories into a single, production-grade, **Field-Ready** system capable of real-time colony health monitoring, achieving **🏆 0.9830 F1-Score** in health state detection (SOTA).
 
 ---
 
@@ -38,6 +38,22 @@ To freeze the latest brain for deployment, run:
 python tools/export_brain.py beesound_best_v3.pth
 ```
 *Outputs: `models/bee_brain_v3.onnx`*
+
+---
+
+## 🔬 Phase 3: Scientific Validation
+To move from "Lab Performance" to "Scientific Discovery," we are implementing three rigorous validation protocols to prove this model can survive real-world apiary conditions.
+
+### 1. 🌪️ The "Storm" Test (Noise Robustness)
+We deliberately corrupt our high-quality recordings with **White Noise** and **Rain Ambience** to determine the exact failure point of the detection engine.
+- **Tool:** `tools/stress_test.py`
+- **Output:** Accuracy-vs-Noise Decay Curve.
+
+### 2. 🧠 "Show Your Work" (Grad-CAM)
+We use Gradient-weighted Class Activation Mapping to visualize exactly *why* the model triggers an alert. We verify it is focusing on the **450Hz piping signature** and not background environmental static.
+
+### 3. 🌍 "Stranger Danger" (Cross-Dataset Validation)
+To prove generalization, we perform a "blind test": Training on the **NU-Hive** dataset and validating on the completely unseen **OSBH** dataset. This ensures the model isn't just memorizing one specific microphone's acoustic profile.
 
 ---
 
