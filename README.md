@@ -32,7 +32,7 @@ BeeSound Analysis combines **Edge Computing (IoT)**, **Bioacoustic Signal Proces
 ---
 
 ## 🛠️ Edge Engineering: "The Shrink Ray"
-Having achieved State-of-the-Art performance in the cloud, we are now transitioning from **Research** to **Reality**. We are moving our 0.9830 F1 "DeepBrain" onto $5 IoT hardware.
+Having achieved State-of-the-Art performance in the cloud, we are now transitioning from **Research** to **Reality**.
 
 ### 🔋 Deployment Roadmap
 1.  **Freeze & Export**: Convert the PyTorch `.pth` weights to the universal **ONNX** format.
