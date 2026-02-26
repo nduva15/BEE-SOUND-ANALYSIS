@@ -251,17 +251,31 @@ We have successfully ported the **OSBH Audio Analyzer** C++ engine to run on ESP
 
 ---
 
-## 📊 Research Data
-This project unifies data from **6 peer-reviewed sources**:
+## 📊 Research Data Specifications
 
-| Source | Role | Status |
-|--------|------|--------|
-| **OSBH** | Firmware Logic | ✅ Ported |
-| **NUHIVE** | Label Mapping | ✅ Dataset Indexed |
-| **BAD** | 40k Audio Samples | ✅ Dataset Indexed |
-| **SBCM** | 213k Audio Samples | ✅ Dataset Indexed |
-| **TBON** | High-Fidelity Labels | ✅ Metadata Mined |
-| **Focal Loss** | Imbalance Defense | ✅ Math Implemented |
+### 🎙️ Recording Hardware and Acquisition Parameters
+
+| Parameter | Specification |
+| :--- | :--- |
+| **Microphone Model(s)** | **INMP441** (MEMS I2S Digital) - Sensitivity: -26 dBFS, Range: 60 Hz to 15 kHz. |
+| **Sampling Rate (Hz)** | **22,050 Hz** (Optimized for Bee Sound frequency bands). |
+| **Bit Depth** | **16-bit PCM** (Internal) / **24-bit** (Hardware support). |
+| **Recording Format** | **WAV**, **FLAC**, and **OGG** (OSBH Standard). |
+| **Typical Duration** | **2.0s Windows** (Dynamic Inference) / **60s Blocks** (Longitudinal Study). |
+| **Continuity** | Continuous longitudinal monitoring with automated segmentation. |
+
+### 📁 Dataset Structure and Labelling (BeeTogether Archive)
+
+*   **Total Samples:** **435,836 Labeled Recordings** (28GB Data Archive).
+    *   *NU-Hive:* 169,044 | *SBCM:* 213,000 | *BAD:* 40,000 | *TBON:* 13,000.
+*   **Target Labels:**
+    *   **Hive State:** Active, Queen Absence, Swarming, Dormant.
+    *   **Events:** Queen Piping (450Hz signature), Worker "Shimmering", Queen Hatching.
+    *   **Health:** Varroa Infestation, American Foulbrood, Colony Stress.
+*   **Labelling Method:** Manual physical inspection + Expert bioacoustic annotation (QMUL Standards).
+*   **Hives/Apiaries:** Data unified from over 50 distinct hives across diverse geographical locations (Europe, USA, and Africa).
+*   **Metadata:** Synchronized temporal data including Temperature, Humidity, and Hive Weight.
+
 
 ---
 
