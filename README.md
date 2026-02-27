@@ -44,32 +44,53 @@ The core inference engine utilizes a deep residual architecture (ResNet-Deep) mo
 2.  **Segmentation**: 2.0-second sliding windows with 50% overlap for real-time responsiveness.
 3.  **Feature Engineering**: Extraction of Mel-Frequency Cepstral Coefficients (MFCCs), spectral centroid, and spectral rolloff for hybrid CNN-Transformer inputs.
 
-## 5. Edge Intelligence and Deployment
-To transition from research to field application, we implement a "Shrink Ray" pipeline for deployment on $5 IoT hardware (ESP32).
+## 🛠️ Edge Engineering: "The Shrink Ray"
+Having achieved State-of-the-Art performance in the cloud, we are now transitioning from **Research** to **Reality**. We are moving our 0.9830 F1 "DeepBrain" onto $5 IoT hardware.
 
-*   **Model Compression**: Conversion of PyTorch `.pth` weights to universal ONNX format.
-*   **Quantization**: Post-Training Quantization (PTQ) from `Float32` to `Int8`, achieving a 4x reduction in footprint (e.g., 100MB to 25MB) with negligible accuracy loss.
-*   **Hardware Acquisition**: Utilization of the **INMP441** MEMS I2S microphone (-26 dBFS sensitivity) for digital-native audio capture on the ESP32 Sniffer hardware.
+### 🔋 Deployment Roadmap
+1.  **Freeze & Export**: Convert the PyTorch `.pth` weights to the universal **ONNX** format.
+2.  **Quantization (PTQ)**: Compress the model from `Float32` to `Int8`.
+3.  **ESP32 Integration**: Deploy the quantized `.tflite` model to the Sniffer firmware for real-time inference.
 
-## 6. Rigorous Scientific Validation
+---
+
+## 🔬 Phase 3: Scientific Validation
 We employ three primary protocols to ensure model reliability in uncontrolled environments:
 
 1.  **Acoustic Robustness Testing**: Evaluating performance decay against controlled noise injections (white noise, torrential rain, and wind interference).
-2.  **Interpretability (Grad-CAM)**: Utilizing Gradient-weighted Class Activation Mapping to verify that the model focuses on biologically relevant signatures (e.g., the 450 Hz piping frequency) rather than artifactual environmental noise.
-3.  **Generalization (Cross-Dataset Validation)**: Blind-testing the engine on the OSBH dataset after training on NU-Hive to prove portability across different microphone profiles and apiary acoustics.
+2.  **Interpretability (Grad-CAM)**: Utilizing Gradient-weighted Class Activation Mapping to verify that the model focuses on biologically relevant signatures (e.g., the 450 Hz piping frequency).
+3.  **Generalization (Cross-Dataset Validation)**: Blind-testing the engine on the OSBH dataset after training on NU-Hive to prove portability across different microphone profiles.
 
-## 7. Implementation
-### 7.1 Environment Setup
-```bash
-git clone https://github.com/nduva15/BEE-SOUND-ANALYSIS.git
-cd BeeSound_Analysis
-pip install -r requirements.txt
-```
+---
 
-### 7.2 Core Utilities
-*   **Indexing**: `python tools/fast_indexer.py` (Rebuilds the master HDF5 index).
-*   **Training**: `python tools/train_architecture.py` (Research-grade training loop).
-*   **Deployment**: `python tools/export_brain.py` (Freezes architecture for ONNX/TFLite export).
+## 📈 Live Training Progress (Production v3.1)
+
+### 🏁 Session Status: PRODUCTION RUN (RE-COLD START) 🔄
+**Current Phase:** Restoring SOTA Weights
+**Epoch:** 0/1 (Targeted Cycle)
+**Data Processed:** `[██░░░░░░░░░░░░░░░░░░]` **14.7%** (1000/6810 Batches)
+**Total Samples Seen:** 435,837 (Indexed) | 64,000 (Active)
+**Runtime:** ~45m (Steady State)
+
+### 🖥️ Infrastructure Benchmarks (Kaggle T4 x2)
+| Component | Utilization | Status |
+|-----------|-------------|--------|
+| **CPU (4-Core)** | 398.00% | ⚡ **Consistent Max Parallelism** |
+| **System RAM** | 5.8GiB / 30GiB | ✅ Distributed Memory (Stable) |
+| **GPU 1 (NVIDIA T4)** | 82.00% (Avg) | 🚀 ResNet Mapping |
+| **GPU 2 (NVIDIA T4)** | 0.00% | 💤 Reserved for Validation |
+| **Disk Space** | 385.2MiB | 📦 Persistent Checkpoints |
+
+### 📊 Loss Trend Analysis (Run #4)
+| Batch Index | Training Loss | Performance Delta |
+|-------------|---------------|-------------------|
+| 0           | 0.180834      | 🏁 Baseline Reset |
+| 200         | 0.119380      | 📉 Initial Burst  |
+| 500         | 0.129048      | 🔍 Entropy check  |
+| 700         | 0.112291      | 📉 Signal Lock    |
+| **1000**    | **0.145920**  | 🌫️ **Noise encounter** |
+
+> **🧬 Researcher Note:** Batch 1000 shows a slight increase in loss (`0.145`) compared to previous runs. This is expected as the `research_miner` failed to finalize the OSBH-refined labels due to a pathing issue, meaning the model is currenty training on **filename-heuristics only**. While robust, the next cycle should include the full "Deep Mine" labels to break the 0.98 barrier.
 
 ---
 **Maintained by Timothy Nduva**  
