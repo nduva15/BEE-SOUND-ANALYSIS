@@ -210,7 +210,17 @@ def train_production():
         if f1 > best_f1:
             best_f1 = f1
             torch.save(model.state_dict(), 'beesound_final_v3.pth')
-            print("💾 Best Brain Saved!")
+            print(f"💾 Best Brain Saved with F1: {best_f1:.4f}")
+        
+    print("\n🚀 TRAINING COMPLETE. STARTING AUTOMATED ONNX EXPORT...")
+    try:
+        dummy_input = torch.randn(1, 1, 128, 128) # Adjust shape to match your model's input
+        torch.onnx.export(model, dummy_input, "bee_brain_v3.onnx", 
+                         verbose=False, input_names=['audio_input'], 
+                         output_names=['health_state'])
+        print("✅ ONNX Export Successful: bee_brain_v3.onnx")
+    except Exception as e:
+        print(f"❌ ONNX Export Failed: {e}")
 
 if __name__ == "__main__":
     train_production()
