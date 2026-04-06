@@ -214,7 +214,7 @@ def train_production():
         
     print("\n🚀 TRAINING COMPLETE. STARTING AUTOMATED ONNX EXPORT...")
     try:
-        dummy_input = torch.randn(1, 1, 128, 128) # Adjust shape to match your model's input
+        dummy_input = torch.randn(1, 1, 128, 87) # Adjust shape to match your model's input
         torch.onnx.export(model, dummy_input, "bee_brain_v3.onnx", 
                          verbose=False, input_names=['audio_input'], 
                          output_names=['health_state'])
