@@ -1,78 +1,85 @@
-/**
- * BEESOUND ANALYSIS - ESP32 Firmware
- * 
- * Adapted from OSBH Audio Analyzer for ESP32 Edge Computing.
- * 
- * Logic:
- * 1. Capture Audio via I2S (INMP441 or similar)
- * 2. Feed samples to FeatureExtractor (ported from OSBH)
- * 3. Run On-Device Classification (Lightweight)
- * 4. Upload significant events to Backend
- */
-
 #include <Arduino.h>
-#include "featureExtractor.h"
+#include <stdint.h>
+#include <string.h>
+#include <driver/i2s.h>
+#include "DeepBrainInference.h"
 #include "params.h"
-#include "classifier.h"
 
-// --- MICROPHONE CONFIGURATION (Placeholder) ---
-// TODO: Configure I2S driver here
-#define I2S_WS 25
-#define I2S_SD 26
-#define I2S_SCK 27
+// --- I2S CONFIGURATION (INMP441) ---
+const i2s_port_t I2S_PORT = I2S_NUM_0;
+const int BLOCK_SIZE = 1024; // Samples per I2S read
+
+void setup_i2s() {
+    i2s_config_t i2s_config = {
+        .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
+        .sample_rate = (int)samplingRate,
+        .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
+        .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
+        .communication_format = I2S_COMM_FORMAT_STAND_I2S,
+        .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
+        .dma_buf_count = 8,
+        .dma_buf_len = BLOCK_SIZE,
+        .use_apll = false
+    };
+
+    i2s_pin_config_t pin_config = {
+        .bck_io_num = 27,   // SCK
+        .ws_io_num = 25,    // WS
+        .data_out_num = -1,
+        .data_in_num = 26   // SD
+    };
+
+    i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
+    i2s_set_pin(I2S_PORT, &pin_config);
+}
 
 // --- GLOBAL OBJECTS ---
-FeatureExtractor* fex = nullptr;
-Classifier* classifier = nullptr;
+DeepBrainInference* brain = nullptr;
+float* mel_buffer = nullptr;
+int sample_idx = 0;
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("🐝 BeeSound Analysis - Edge Firmware Starting...");
-    Serial.printf("   Target Sample Rate: %.1f Hz\n", samplingRate);
+    Serial.println("🐝 BeeSound Analysis - Edge Firmware v3.1");
 
-    // 1. Initialize Filters & Feature Extractor
-    // Note: Filters need to be recalculated for 22050Hz!
-    // For now, we initialize with the default constructor which handles this.
-    std::vector<Filter> filters; // Populate this with 22kHz coeffs
-    fex = new FeatureExtractor(filters, samplingRate, windowLength);
+    setup_i2s();
+    
+    brain = new DeepBrainInference();
+    if (brain->begin()) {
+        Serial.println("✅ DeepBrain v3.1 Inference Engine Ready");
+    } else {
+        Serial.println("❌ Inference Engine Initialization Failed!");
+    }
 
-    // 2. Initialize Classifier
-    // Load pre-trained weights (Logistic Regression or Decision Tree)
-    // This string is a placeholder from the original OSBH code
-    classifier = new Classifier("logistic", "s1,3.03,4.21,-2..."); 
-
-    Serial.println("✅ Edge AI Engine Initialized");
+    // Allocate buffer for 2s window (128 bins x 87 steps)
+    mel_buffer = new float[128 * 87];
+    memset(mel_buffer, 0, 128 * 87 * sizeof(float));
 }
 
 void loop() {
-    // --- AUDIO CAPTURE LOOP ---
-    // In a real device, this would read from I2S buffer
-    // For simulation, we assume a sample 'x' is arriving
+    // --- REAL-TIME CAPTURE & INFERENCE ---
+    // Note: In a production system, Feature Extraction (Mel-Spec)
+    // would happen here on every hop_length (512 samples).
     
-    float sample = 0.0; // Placeholder for I2S_Read(); 
-    
-    // --- PROCESSING ---
-    if (fex != nullptr) {
-        fex->update(sample);
+    int32_t i2s_samples[BLOCK_SIZE];
+    size_t bytes_read;
+    i2s_read(I2S_PORT, &i2s_samples, sizeof(i2s_samples), &bytes_read, portMAX_DELAY);
 
-        if (fex->isReady()) {
-            std::vector<float> energy = fex->getEnergy();
-            
-            // Run classification
-            if (classifier != nullptr) {
-                int state = classifier->classify(energy);
-                
-                // If State != Healthy, allow upload
-                if (state != 1) { // Assuming 1 = Healthy
-                     Serial.printf("🚨 ALERT: Anomalous State %d Detected!\n", state);
-                     // upload_to_cloud();
-                }
-            }
+    // TODO: Implement FFT + Mel-Filterbank to populate mel_buffer
+    // For now, we simulate completion of a 2s window
+    bool window_complete = false; 
 
-            fex->clearEnergy();
+    if (window_complete && brain != nullptr) {
+        int state = brain->predict(mel_buffer);
+        
+        if (state == 1) {
+            Serial.println("🚨 ALERT: Anomalous Hive State (Queenless/Swarm) Detected!");
+        } else {
+            Serial.println("Healthy Baseline Recorded.");
         }
+        
+        // Prepare for next window
+        memset(mel_buffer, 0, 128 * 87 * sizeof(float));
     }
-    
-    // Small delay to simulate sampling rate (remove in production I2S code)
-    delayMicroseconds(1000000 / samplingRate);
 }
+

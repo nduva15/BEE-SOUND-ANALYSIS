@@ -1,0 +1,81 @@
+import torch
+import numpy as np
+import os
+import sys
+import tensorflow as tf
+from torch.utils.data import DataLoader
+
+# Add parent dir to path for imports
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from tools.train_architecture import BeeDeepArchitecture, BeeDataset
+
+def quantize_to_tflite(onnx_path, output_path, representative_data_path=None):
+    """
+    Converts ONNX model to TFLite with Int8 Quantization.
+    Requires: onnx, onnx-tf or onnx2tf, tensorflow
+    """
+    print(f"🛠️ Starting Quantization Pipeline: {onnx_path}")
+    
+    # 1. Convert ONNX to TensorFlow SavedModel
+    # Note: This usually requires 'onnx2tf' or 'onnx-tf'
+    # For this environment, we assume the user will run this in a container with these tools
+    # or we provide the logic to use TFLiteConverter directly if 
+    # we can rebuild the model in Keras (complex for ResNet).
+    
+    # ADVANCED LOGIC: Since direct ONNX->TFLite is often tool-dependent,
+    # we will provide the script that uses the TFLiteConverter on a 
+    # placeholder Keras model if we were to port the architecture,
+    # OR better yet, we provide the instructions for the 'onnx2tf' command
+    # which is the industry standard for this.
+    
+    print("📋 Optimization Strategy: Post-Training Integer Quantization (PTQ)")
+    
+    # If we have representative data, we can do full integer quantization
+    def representative_dataset_gen():
+        if representative_data_path and os.path.exists(representative_data_path):
+            dataset = BeeDataset(representative_data_path)
+            loader = DataLoader(dataset, batch_size=1, shuffle=True)
+            for i, (data, _) in enumerate(loader):
+                if i > 100: break # Use 100 samples for calibration
+                yield [data.numpy().astype(np.float32)]
+        else:
+            # Fallback to random data for demonstration if no manifest provided
+            for _ in range(100):
+                yield [np.random.randn(1, 1, 128, 87).astype(np.float32)]
+
+    # This part assumes we have a TensorFlow model 'tf_model_path'
+    # In a real workflow, the user would run: onnx2tf -i model.onnx -o model_tf
+    tf_model_path = onnx_path.replace(".onnx", "_tf")
+    
+    if not os.path.exists(tf_model_path):
+        print(f"⚠️ TensorFlow SavedModel not found at {tf_model_path}")
+        print("👉 Run: 'onnx2tf -i models/bee_brain_v3.onnx -o models/bee_brain_v3_tf'")
+        return
+
+    converter = tf.lite.TFLiteConverter.from_saved_model(tf_model_path)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.representative_dataset = representative_dataset_gen
+    
+    # Target ESP32-S3 (supports Int8)
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    converter.inference_input_type = tf.int8
+    converter.inference_output_type = tf.int8
+    
+    print("🚀 Running TFLite Conversion (Int8)...")
+    tflite_model = converter.convert()
+    
+    with open(output_path, 'wb') as f:
+        f.write(tflite_model)
+    
+    print(f"✅ SUCCESS: Quantized model saved to {output_path}")
+    print(f"📏 Size Reduction: ~4x expected.")
+
+if __name__ == "__main__":
+    onnx_file = "models/bee_brain_v3.onnx"
+    tflite_file = "models/bee_brain_v3_int8.tflite"
+    manifest = "train_manifest_research.csv"
+    
+    if os.path.exists(onnx_file):
+        quantize_to_tflite(onnx_file, tflite_file, manifest)
+    else:
+        print(f"❌ Could not find {onnx_file}. Please run export_brain.py first.")
