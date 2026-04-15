@@ -1,5 +1,10 @@
+#ifndef PARAMS_H
+#define PARAMS_H
+
 //Window Length in s
-float windowLength=2;
+constexpr float windowLength = 2.0f;
 
 //Sampling Rate in Hz - Calibrated for new Transformer models
-float samplingRate=22050;
+constexpr float samplingRate = 22050.0f;
+
+#endif
