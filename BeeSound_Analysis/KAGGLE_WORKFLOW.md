@@ -114,4 +114,34 @@ pd.DataFrame(manifest).to_csv('bee_training_master.csv', index=False)
 
 ---
 
+## 6. Exporting Trained Models (The "Shrink Ray")
+Once your model successfully finishes training on Kaggle, you will want to export the `.pth` weights, convert them to ONNX, and quantize them to TFLite for the ESP32. 
+
+Instead of doing this locally, run this single orchestrator command at the end of your Kaggle notebook:
+
+```python
+# Create deployment artifacts (ONNX + TFLite) and zip them up
+!pip install onnx2tf tensorflow
+!python tools/kaggle_export.py --weights beesound_final_v3.pth
+```
+
+Kaggle will bundle everything into `/kaggle/working/release_artifacts.zip`. 
+
+### The downloaded ZIP structure
+The zip file perfectly pairs with `import_checkpoint.py` and hardware deployment. Inside it, you will find:
+- 📁 **`beesound_final_v3.pth`**: The raw PyTorch weights (for full-precision local inference).
+- 📁 **`beesound_final_v3.onnx`**: The optimized ONNX graph (for fast local CPU/GPU execution).
+- 📁 **`beesound_final_v3_int8.tflite`**: The quantized TFLite binary (ready for flashing onto the ESP32).
+
+### Next Steps Locally
+1. In the Kaggle UI pane on the right under "Output", locate `release_artifacts.zip` and click **Download**.
+2. Unzip it locally.
+3. Import the exact PyTorch weights into the local module using:
+```bash
+python tools/import_checkpoint.py --source /path/to/extracted/beesound_final_v3.pth --slot beesound_v3
+```
+*(The rest of the pipeline handles the ESP32 deployment later on!)*
+
+---
+
 **Happy Cloud Training!** 🐝

@@ -7,7 +7,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from tools.train_architecture import BeeDeepArchitecture
 
-def export_to_onnx(model_path, num_classes=2):
+def export_to_onnx(model_path, output_path="models/bee_brain_v3.onnx", num_classes=2):
     print(f"📦 Loading Best Brain from: {model_path}...")
     
     # 1. Initialize the Model Architecture
@@ -29,8 +29,7 @@ def export_to_onnx(model_path, num_classes=2):
     dummy_input = torch.randn(1, 1, 128, 87) 
     
     # 4. Export to ONNX
-    output_path = "models/bee_brain_v3.onnx"
-    os.makedirs("models", exist_ok=True)
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
     
     print(f"🚀 Exporting to ONNX format...")
     torch.onnx.export(

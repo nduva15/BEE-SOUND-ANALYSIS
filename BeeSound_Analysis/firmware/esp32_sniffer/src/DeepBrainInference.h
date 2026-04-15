@@ -32,8 +32,9 @@ private:
     TfLiteTensor* input = nullptr;
     TfLiteTensor* output = nullptr;
 
-    // Arena size - adjusted for ResNet-Deep (approx 500KB - 1MB)
-    static constexpr int kArenaSize = 1024 * 700; 
+    // Arena size - Optimized for Int8 Quantized ResNet/MobileNet
+    // Previously 700KB, reduced to 250KB to leave room for WiFi/Bluetooth stacks on ESP32.
+    static constexpr int kArenaSize = 1024 * 250; 
     uint8_t tensor_arena[kArenaSize];
 };
 
