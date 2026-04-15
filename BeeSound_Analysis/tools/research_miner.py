@@ -4,7 +4,7 @@ Extracts labels from Research HDF5 files (NUHIVE, TBON, SBCM).
 Converts metadata indices into a single Research-Grade Manifest.
 """
 
-import h5py
+import h5py  # type: ignore
 import pandas as pd
 import numpy as np
 import os

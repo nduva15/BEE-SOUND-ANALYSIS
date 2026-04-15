@@ -72,7 +72,7 @@ class HealthStateClassifier:
             )
             if tools_dir not in sys.path:
                 sys.path.insert(0, tools_dir)
-            from train_architecture import BeeDeepArchitecture
+            from train_architecture import BeeDeepArchitecture  # type: ignore
 
             model = BeeDeepArchitecture(num_classes=self.num_classes)
             state_dict = torch.load(weights_path, map_location='cpu', weights_only=True)

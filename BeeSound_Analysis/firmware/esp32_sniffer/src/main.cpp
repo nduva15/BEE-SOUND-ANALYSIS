@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <stdint.h>
-#include <string.h>
+#include <cstring>
 #include <driver/i2s.h>
 #include "DeepBrainInference.h"
 #include "params.h"
