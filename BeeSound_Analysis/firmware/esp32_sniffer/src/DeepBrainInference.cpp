@@ -1,5 +1,5 @@
 #include "DeepBrainInference.h"
-#include "tensorflow/lite/micro/all_ops_resolver.h"
+#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/micro/micro_error_reporter.h"
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/schema/schema_generated.h"
@@ -13,8 +13,16 @@ bool DeepBrainInference::begin() {
     // Load Model
     model = tflite::GetModel(g_bee_brain_model_data);
 
-    // Resolver
-    static tflite::AllOpsResolver resolver;
+    // Resolver (Replaced AllOpsResolver to fix linker stuck at 92%)
+    static tflite::MicroMutableOpResolver<10> resolver;
+    resolver.AddConv2D();
+    resolver.AddDepthwiseConv2D();
+    resolver.AddFullyConnected();
+    resolver.AddRelu();
+    resolver.AddAveragePool2D();
+    resolver.AddReshape();
+    resolver.AddMean();
+    resolver.AddSoftmax();
 
     // Interpreter
     static tflite::MicroInterpreter static_interpreter(
